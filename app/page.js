@@ -1,14 +1,34 @@
 // pages/index.js
 'use client'
 import React, { useState } from 'react';
-import StudentList from '@/components/studentList/StudentList';
+// import StudentList from '@/components/studentList/StudentList';
 import AddStudentForm from '@/components/addStudentForm/AddStudentForm';
+import StudentList from './../components/studentList/StudentList';
 
 
 const Home = () => {
   const [students, setStudents] = useState([]);
 
-  const handleAddStudent = (newStudent) => {
+
+  const handleAddStudent =async(newStudent) => {
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var raw = JSON.stringify(newStudent);
+      
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+      
+      await fetch("http://localhost:3000/api/students", requestOptions)
+      alert('data is submitted')
+      
+    } catch (error) {
+      console.log('error',error);
+    }
     setStudents([...students, { id: Date.now(), ...newStudent }]);
   };
 
